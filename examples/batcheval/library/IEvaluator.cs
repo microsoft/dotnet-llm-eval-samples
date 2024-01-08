@@ -1,6 +1,6 @@
 namespace BatchEval.Core;
 
-internal interface IEvaluator<T>
+public interface IEvaluator<T>
 {
     public string Id { get; }
 

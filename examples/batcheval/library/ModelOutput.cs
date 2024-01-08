@@ -1,6 +1,6 @@
 namespace BatchEval.Core;
 
-internal struct ModelOutput
+public struct ModelOutput
 {
     public string Input { get; set; }
 

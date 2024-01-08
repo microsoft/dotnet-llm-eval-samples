@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BatchEval.Core;
 
-internal class PromptScoreEval : IEvaluator<int>
+public class PromptScoreEval : IEvaluator<int>
 {
     private Kernel kernel;
 

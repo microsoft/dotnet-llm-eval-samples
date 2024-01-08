@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BatchEval.Core;
 
-internal class BatchEval<T>
+public class BatchEval<T>
 {
     IList<IEvaluator<int>> evaluators = new List<IEvaluator<int>>();
 
@@ -16,24 +16,24 @@ internal class BatchEval<T>
 
     IInputProcessor<T>? inputProcessor;
 
-    internal BatchEval<T> WithInputProcessor(IInputProcessor<T> inputProcessor)
+    public BatchEval<T> WithInputProcessor(IInputProcessor<T> inputProcessor)
     {
         this.inputProcessor = inputProcessor;
         return this;
     }
 
-    internal BatchEval<T> AddEvaluator(IEvaluator<int> evaluator)
+    public BatchEval<T> AddEvaluator(IEvaluator<int> evaluator)
     {
         evaluators.Add(evaluator);
         return this;
     }
 
-    internal async Task Run()
+    public async Task Run()
     {
         await ProcessUserInputFile();
     }
 
-    internal BatchEval<T> WithJsonl(string fileName)
+    public BatchEval<T> WithJsonl(string fileName)
     {
         this.fileName = fileName;
         return this;
