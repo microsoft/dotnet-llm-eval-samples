@@ -26,6 +26,8 @@ Demonstrates the integration of LLM evaluation into a CI/CD pipeline using GitHu
 
 Provides examples of batch evaluation processes for large files using dotnet. This sample focuses on efficient processing and monitoring/analyzing data, emphasizing scalability and performance.
 
+Check the [Batch Evaluation Notebook](/notebooks/batcheval.ipynb) to get started.
+
 ## Getting Started
 
 To get started with the samples, refer to the individual README files within each sample directory. Follow the step-by-step instructions to integrate LLM evaluation into your dotnet applications seamlessly.
