@@ -10,7 +10,9 @@ namespace BatchEval.Core;
 
 public class BatchEval<T>
 {
-    IList<IEvaluator<int>> evaluators = new List<IEvaluator<int>>();
+    IList<IEvaluator<int>> intEvaluators = new List<IEvaluator<int>>();
+
+    IList<IEvaluator<bool>> boolEvaluators = new List<IEvaluator<bool>>();
 
     string? fileName;
 
@@ -24,7 +26,13 @@ public class BatchEval<T>
 
     public BatchEval<T> AddEvaluator(IEvaluator<int> evaluator)
     {
-        evaluators.Add(evaluator);
+        intEvaluators.Add(evaluator);
+        return this;
+    }
+
+    public BatchEval<T> AddEvaluator(IEvaluator<bool> evaluator)
+    {
+        boolEvaluators.Add(evaluator);
         return this;
     }
 
@@ -60,10 +68,23 @@ public class BatchEval<T>
 
         var histograms = new Dictionary<string, Histogram<int>>();
 
-        foreach (var evaluator in evaluators)
+        var boolCounters = new Dictionary<string, Counter<int>>();
+
+        foreach (var evaluator in intEvaluators)
         {
             var histogram = meter.CreateHistogram<int>($"{evaluator.Id.ToLowerInvariant()}.score");
             histograms.Add(evaluator.Id, histogram);
+        }
+
+        foreach (var evaluator in boolEvaluators)
+        {
+            boolCounters.Add(
+                $"{evaluator.Id.ToLowerInvariant()}.failure", 
+                meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.failure"));
+
+            boolCounters.Add(
+                $"{evaluator.Id.ToLowerInvariant()}.success", 
+                meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.success"));
         }
 
         string? line;
@@ -78,12 +99,25 @@ public class BatchEval<T>
 
             counter.Add(1);
 
-            foreach (var evaluator in evaluators)
+            foreach (var evaluator in intEvaluators)
             {
                 var score = await evaluator.Eval(modelOutput);
 
                 Console.WriteLine($"E: {evaluator.Id.ToLowerInvariant()} S: {score}");
                 histograms[evaluator.Id.ToLowerInvariant()].Record(score);
+            }
+
+            foreach (var evaluator in boolEvaluators)
+            {
+                var evalResult = await evaluator.Eval(modelOutput);
+
+                Console.WriteLine($"E: {evaluator.Id.ToLowerInvariant()} R: {evalResult}");
+
+                if (evalResult) {
+                    boolCounters[$"{evaluator.Id.ToLowerInvariant()}.success"].Add(1);
+                } else {
+                    boolCounters[$"{evaluator.Id.ToLowerInvariant()}.failure"].Add(1);
+                }
             }
         }
     }
@@ -93,10 +127,10 @@ public class BatchEval<T>
         var builder = Sdk.CreateMeterProviderBuilder()
             .AddMeter(meterId);
 
-        foreach (var evaluator in evaluators)
+        foreach (var evaluator in intEvaluators)
         {
             builder.AddView(
-                instrumentName: "coherence.score",
+                instrumentName: $"{evaluator.Id.ToLowerInvariant()}.score",
                 new ExplicitBucketHistogramConfiguration { Boundaries = new double[] { 1, 2, 3, 4, 5 } });
         }
 

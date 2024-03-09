@@ -10,9 +10,9 @@ namespace BatchEval.Core;
 
 public class PromptScoreEval : IEvaluator<int>
 {
-    private Kernel kernel;
+    private readonly Kernel kernel;
 
-    private KernelFunction function;
+    private readonly KernelFunction function;
 
     public string Id { get; }
 
@@ -21,6 +21,16 @@ public class PromptScoreEval : IEvaluator<int>
         this.function = function;
         this.kernel = kernel;
         this.Id = id;
+    }
+
+    public PromptScoreEval(string id, Kernel kernel, string embeddedPrompt)
+    {
+        this.kernel = kernel;
+        this.Id = id;
+        
+        string promptTemplate = EmbeddedResource.Read(embeddedPrompt)!;
+
+        this.function = kernel.CreateFunctionFromPrompt(promptTemplate);
     }
 
     public async Task<int> Eval(ModelOutput modelOutput)
