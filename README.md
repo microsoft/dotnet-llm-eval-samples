@@ -45,6 +45,8 @@ docker-compose up
 
 Prometheus explorer should be on the port 9090 and grafana dashboard on the port 3000.
 
+![image](https://github.com/microsoft/dotnet-llm-eval-samples/assets/952392/a171f658-b67b-435d-99aa-a869b5d9168f)
+
 ## Contribution
 
 Contributions are welcome! If you have additional samples, improvements, or ideas, please open an issue or submit a pull request. We aim to make this repository a collaborative resource for the dotnet ML community.
