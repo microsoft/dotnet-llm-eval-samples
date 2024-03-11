@@ -34,6 +34,17 @@ To get started with the samples, refer to the individual README files within eac
 
 Check the [Batch Evaluation Notebook](/notebooks/batcheval.ipynb) to get started.
 
+### OpenTelemetry dashboard
+
+You need to open this project either with GitHub Codespaces, or a docker enabled machine. Go to the `/infra/dashboard` and execute `docker-compose up`:
+
+```bash
+cd /infra/dashboard
+docker-compose up
+```
+
+Prometheus explorer should be on the port 9090 and grafana dashboard on the port 3000.
+
 ## Contribution
 
 Contributions are welcome! If you have additional samples, improvements, or ideas, please open an issue or submit a pull request. We aim to make this repository a collaborative resource for the dotnet ML community.
