@@ -18,6 +18,8 @@ public class BatchEval<T>
 
     IInputProcessor<T>? inputProcessor;
 
+    public string? OtlpEndpoint { get; set; } = default!;
+
     public BatchEval<T> WithInputProcessor(IInputProcessor<T> inputProcessor)
     {
         this.inputProcessor = inputProcessor;
@@ -49,7 +51,7 @@ public class BatchEval<T>
 
     private async Task ProcessUserInputFile()
     {
-        var meterId = "AzDoCopilotTests";
+        var meterId = "llm-eval";
         var meter = CreateMeter(meterId);
 
         const int BufferSize = 128;
@@ -134,8 +136,17 @@ public class BatchEval<T>
                 new ExplicitBucketHistogramConfiguration { Boundaries = new double[] { 1, 2, 3, 4, 5 } });
         }
 
-        builder.AddConsoleExporter()
-               .Build();
+        if (string.IsNullOrEmpty(OtlpEndpoint))
+        {
+            builder.AddConsoleExporter();
+        } else {
+            builder.AddOtlpExporter(otlpOptions =>
+            {
+                otlpOptions.Endpoint = new Uri(OtlpEndpoint);
+            });
+        }
+    
+        builder.Build();
 
         return new Meter(meterId);
     }

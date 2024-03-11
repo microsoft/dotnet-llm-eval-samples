@@ -12,7 +12,18 @@
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000, 5000, 5001]
+	"forwardPorts": [
+		3000,
+		5000,
+		5001
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.dotnet-interactive-vscode"
+			]
+		}
+	}
 	// "portsAttributes": {
 	//		"5001": {
 	//			"protocol": "https"
