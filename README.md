@@ -32,6 +32,8 @@ Check the [Batch Evaluation Notebook](/notebooks/batcheval.ipynb) to get started
 
 To get started with the samples, refer to the individual README files within each sample directory. Follow the step-by-step instructions to integrate LLM evaluation into your dotnet applications seamlessly.
 
+Check the [Batch Evaluation Notebook](/notebooks/batcheval.ipynb) to get started.
+
 ## Contribution
 
 Contributions are welcome! If you have additional samples, improvements, or ideas, please open an issue or submit a pull request. We aim to make this repository a collaborative resource for the dotnet ML community.
