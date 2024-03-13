@@ -16,11 +16,11 @@ Using Polyglots provides a familiar environment for those accustomed to Jupyter 
 
 ### 1. Unit Tests
 
-Illustrates how to conduct unit tests for LLMs in a .NET environment. These tests will cover various aspects of model evaluation, ensuring the robustness and correctness of the implemented logic.
+Illustrates how to conduct unit tests for LLMs in a .NET environment. These tests will cover various aspects of model evaluation, ensuring the robustness and correctness of the implemented logic. (WORK IN PROGRESS)
 
 ### 2. CI/CD Integration
 
-Demonstrates the integration of LLM evaluation into a CI/CD pipeline using GitHub Actions. This sample showcases how to automate the evaluation process as part of the development workflow.
+Demonstrates the integration of LLM evaluation into a CI/CD pipeline using GitHub Actions. This sample showcases how to automate the evaluation process as part of the development workflow. (WORK IN PROGRESS)
 
 ### 3. Batch Evaluation
 
@@ -44,6 +44,8 @@ docker-compose up
 ```
 
 Prometheus explorer should be on the port 9090 and grafana dashboard on the port 3000.
+
+![image](https://github.com/microsoft/dotnet-llm-eval-samples/assets/952392/a171f658-b67b-435d-99aa-a869b5d9168f)
 
 ## Contribution
 
