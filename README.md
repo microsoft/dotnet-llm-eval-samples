@@ -34,7 +34,7 @@ To get started with the samples, refer to the individual README files within eac
 
 Check the [Batch Evaluation Notebook](/notebooks/batcheval.ipynb) to get started.
 
-### OpenTelemetry dashboard
+### OpenTelemetry + Grafana dashboard
 
 You need to open this project either with GitHub Codespaces, or a docker enabled machine. Go to the `/infra/dashboard` and execute `docker-compose up`:
 
@@ -46,6 +46,8 @@ docker-compose up
 Prometheus explorer should be on the port 9090 and grafana dashboard on the port 3000.
 
 ![image](https://github.com/microsoft/dotnet-llm-eval-samples/assets/952392/a171f658-b67b-435d-99aa-a869b5d9168f)
+
+You can import the [sample dashboard](/infra/dashboard/sample-dashboard.json) in Grafana.
 
 ## Contribution
 
