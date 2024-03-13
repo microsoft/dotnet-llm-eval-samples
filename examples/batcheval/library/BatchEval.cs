@@ -66,6 +66,7 @@ public class BatchEval<T>
        StreamReader streamReader,
        Meter meter)
     {
+
         var counter = meter.CreateCounter<int>($"prompt.counter");
 
         var histograms = new Dictionary<string, Histogram<int>>();
@@ -145,6 +146,8 @@ public class BatchEval<T>
                 otlpOptions.Endpoint = new Uri(OtlpEndpoint);
             });
         }
+
+        builder.AddMeter("Microsoft.SemanticKernel*");
     
         builder.Build();
 
