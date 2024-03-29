@@ -18,12 +18,25 @@ public class BatchEval<T>
 
     IInputProcessor<T>? inputProcessor;
 
+    IOutputProcessor? outputProcessor;
+
     public string? OtlpEndpoint { get; set; } = default!;
 
     public BatchEval<T> WithInputProcessor(IInputProcessor<T> inputProcessor)
     {
         this.inputProcessor = inputProcessor;
         return this;
+    }
+
+    public BatchEval<T> WithOutputProcessor(IOutputProcessor outputProcessor)
+    {
+        this.outputProcessor = outputProcessor;
+        return this;
+    }
+
+    public BatchEval<T> WithCsvOutputProcessor(string filename)
+    {
+        return WithOutputProcessor(new CsvOutputProcessor(filename));
     }
 
     public BatchEval<T> AddEvaluator(IEvaluator<int> evaluator)
@@ -38,9 +51,9 @@ public class BatchEval<T>
         return this;
     }
 
-    public async Task Run()
+    public async Task<BatchEvalResults> Run()
     {
-        await ProcessUserInputFile();
+        return await ProcessUserInputFile();
     }
 
     public BatchEval<T> WithJsonl(string fileName)
@@ -49,7 +62,7 @@ public class BatchEval<T>
         return this;
     }
 
-    private async Task ProcessUserInputFile()
+    private async Task<BatchEvalResults> ProcessUserInputFile()
     {
         var meterId = "llm-eval";
         var meter = CreateMeter(meterId);
@@ -58,37 +71,46 @@ public class BatchEval<T>
         using (var fileStream = File.OpenRead(fileName!))
         using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
         {
-            await ProcessFileLines(streamReader, meter);
+            var results = await ProcessFileLines(streamReader, meter);
+            return results;
         }
     }
 
-    private async Task ProcessFileLines(
-       StreamReader streamReader,
-       Meter meter)
+    private EvalMetrics InitCounters(Meter meter)
     {
-
-        var counter = meter.CreateCounter<int>($"prompt.counter");
-
-        var histograms = new Dictionary<string, Histogram<int>>();
-
-        var boolCounters = new Dictionary<string, Counter<int>>();
-
+        var evalMetrics = new EvalMetrics() {
+            PromptCounter = meter.CreateCounter<int>($"prompt.counter")
+        };
+        
         foreach (var evaluator in intEvaluators)
         {
             var histogram = meter.CreateHistogram<int>($"{evaluator.Id.ToLowerInvariant()}.score");
-            histograms.Add(evaluator.Id, histogram);
+            evalMetrics.ScoreHistograms.Add(evaluator.Id, histogram);
         }
 
         foreach (var evaluator in boolEvaluators)
         {
-            boolCounters.Add(
+            evalMetrics.BooleanCounters.Add(
                 $"{evaluator.Id.ToLowerInvariant()}.failure", 
                 meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.failure"));
 
-            boolCounters.Add(
+            evalMetrics.BooleanCounters.Add(
                 $"{evaluator.Id.ToLowerInvariant()}.success", 
                 meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.success"));
         }
+
+        return evalMetrics;
+    }
+
+    private async Task<BatchEvalResults> ProcessFileLines(
+       StreamReader streamReader,
+       Meter meter)
+    {
+        var evalMetrics = InitCounters(meter);
+
+        outputProcessor?.Init();
+
+        var results = new BatchEvalResults();
 
         string? line;
         while ((line = await streamReader.ReadLineAsync()) != null)
@@ -97,32 +119,47 @@ public class BatchEval<T>
 
             var modelOutput = await inputProcessor!.Process(userInput!);
 
+            var evalOutput = new BatchEvalPromptOutput()
+            {
+                Subject = modelOutput
+            };
+
             Console.WriteLine($"Q: {modelOutput.Input}");
             Console.WriteLine($"A: {modelOutput.Output}");
 
-            counter.Add(1);
+            evalMetrics.PromptCounter.Add(1);
 
             foreach (var evaluator in intEvaluators)
             {
                 var score = await evaluator.Eval(modelOutput);
 
-                Console.WriteLine($"E: {evaluator.Id.ToLowerInvariant()} S: {score}");
-                histograms[evaluator.Id.ToLowerInvariant()].Record(score);
+                Console.WriteLine($"EVAL: {evaluator.Id.ToLowerInvariant()} SCORE: {score}");
+                
+                evalMetrics.ScoreHistograms[evaluator.Id.ToLowerInvariant()].Record(score);
+                evalOutput.Results.Add(evaluator.Id.ToLowerInvariant(), score);
             }
 
             foreach (var evaluator in boolEvaluators)
             {
                 var evalResult = await evaluator.Eval(modelOutput);
 
-                Console.WriteLine($"E: {evaluator.Id.ToLowerInvariant()} R: {evalResult}");
+                Console.WriteLine($"EVAL: {evaluator.Id.ToLowerInvariant()} RESULT: {evalResult}");
+
+                evalOutput.Results.Add(evaluator.Id.ToLowerInvariant(), evalResult);
 
                 if (evalResult) {
-                    boolCounters[$"{evaluator.Id.ToLowerInvariant()}.success"].Add(1);
+                    evalMetrics.BooleanCounters[$"{evaluator.Id.ToLowerInvariant()}.success"].Add(1);
                 } else {
-                    boolCounters[$"{evaluator.Id.ToLowerInvariant()}.failure"].Add(1);
+                    evalMetrics.BooleanCounters[$"{evaluator.Id.ToLowerInvariant()}.failure"].Add(1);
                 }
             }
+
+            outputProcessor?.Process(evalOutput);
+            
+            results.EvalResults.Add(evalOutput);
         }
+
+        return results;
     }
 
     private Meter CreateMeter(string meterId)
