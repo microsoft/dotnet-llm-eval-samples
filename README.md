@@ -24,6 +24,8 @@ Check the [UserStoryGenerator.Tests](/examples/userstorygenerator/UserStoryGener
 
 Demonstrates the integration of LLM evaluation into a CI/CD pipeline using GitHub Actions. This sample showcases how to automate the evaluation process as part of the development workflow. (WORK IN PROGRESS)
 
+Check the [DotNet GitHub actions](/.github/workflows) workflow to get started.
+
 ### 3. Batch Evaluation
 
 Provides examples of batch evaluation processes for large files using dotnet. This sample focuses on efficient processing and monitoring/analyzing data, emphasizing scalability and performance.
