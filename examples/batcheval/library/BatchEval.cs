@@ -1,3 +1,4 @@
+using BatchEval.Metrics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using OpenTelemetry;
@@ -10,6 +11,8 @@ namespace BatchEval.Core;
 
 public class BatchEval<T>
 {
+    public const string MeterId = "LLMEvals.BatchEval";
+
     IList<IEvaluator<int>> intEvaluators = new List<IEvaluator<int>>();
 
     IList<IEvaluator<bool>> boolEvaluators = new List<IEvaluator<bool>>();
@@ -64,8 +67,7 @@ public class BatchEval<T>
 
     private async Task<BatchEvalResults> ProcessUserInputFile()
     {
-        var meterId = "llm-eval";
-        var meter = CreateMeter(meterId);
+        var meter = new Meter(MeterId);
 
         const int BufferSize = 128;
         using (var fileStream = File.OpenRead(fileName!))
@@ -79,23 +81,23 @@ public class BatchEval<T>
     private EvalMetrics InitCounters(Meter meter)
     {
         var evalMetrics = new EvalMetrics() {
-            PromptCounter = meter.CreateCounter<int>($"prompt.counter")
+            PromptCounter = meter.CreateCounter<int>($"llmeval.prompt.counter")
         };
         
         foreach (var evaluator in intEvaluators)
         {
-            var histogram = meter.CreateHistogram<int>($"{evaluator.Id.ToLowerInvariant()}.score");
+            var histogram = meter.CreateHistogram<int>($"llmeval.{evaluator.Id.ToLowerInvariant()}.score");
             evalMetrics.ScoreHistograms.Add(evaluator.Id, histogram);
         }
 
         foreach (var evaluator in boolEvaluators)
         {
             evalMetrics.BooleanCounters.Add(
-                $"{evaluator.Id.ToLowerInvariant()}.failure", 
+                $"llmeval.{evaluator.Id.ToLowerInvariant()}.failure", 
                 meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.failure"));
 
             evalMetrics.BooleanCounters.Add(
-                $"{evaluator.Id.ToLowerInvariant()}.success", 
+                $"llmeval.{evaluator.Id.ToLowerInvariant()}.success", 
                 meter.CreateCounter<int>($"{evaluator.Id.ToLowerInvariant()}.success"));
         }
 
@@ -162,17 +164,12 @@ public class BatchEval<T>
         return results;
     }
 
-    private Meter CreateMeter(string meterId)
+    public void ConfigureMeterBuilder()
     {
         var builder = Sdk.CreateMeterProviderBuilder()
-            .AddMeter(meterId);
+            .AddMeter(MeterId);
 
-        foreach (var evaluator in intEvaluators)
-        {
-            builder.AddView(
-                instrumentName: $"{evaluator.Id.ToLowerInvariant()}.score",
-                new ExplicitBucketHistogramConfiguration { Boundaries = new double[] { 1, 2, 3, 4, 5 } });
-        }
+        builder.AddLLMEvalMetrics(intEvaluators);
 
         if (string.IsNullOrEmpty(OtlpEndpoint))
         {
@@ -187,7 +184,5 @@ public class BatchEval<T>
         builder.AddMeter("Microsoft.SemanticKernel*");
     
         builder.Build();
-
-        return new Meter(meterId);
     }
 }
