@@ -16,7 +16,9 @@ Using Polyglots provides a familiar environment for those accustomed to Jupyter 
 
 ### 1. Unit Tests
 
-Illustrates how to conduct unit tests for LLMs in a .NET environment. These tests will cover various aspects of model evaluation, ensuring the robustness and correctness of the implemented logic. (WORK IN PROGRESS)
+Illustrates how to conduct unit tests for LLMs in a .NET environment. These tests will cover various aspects of model evaluation, ensuring the robustness and correctness of the implemented logic. 
+
+Check the [UserStoryGenerator.Tests](/examples/userstorygenerator/UserStoryGenerator.Tests/) project to get started.
 
 ### 2. CI/CD Integration
 
