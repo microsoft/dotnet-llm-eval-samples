@@ -5,6 +5,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
 using System.Text;
+using Microsoft.SemanticKernel.Connectors;
 
 namespace BatchEval.Core;
 
@@ -29,7 +30,7 @@ public class PromptScoreEval : IEvaluator<int>
         this.Id = id;
         
         string promptTemplate = EmbeddedResource.Read(embeddedPrompt)!;
-
+        
         this.function = kernel.CreateFunctionFromPrompt(promptTemplate);
     }
 

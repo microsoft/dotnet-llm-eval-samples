@@ -1,4 +1,4 @@
-using BatchEval.Core;
+using BatchEval.Core.Tests;
 using UserStoryGenerator;
 using Xunit.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -6,13 +6,13 @@ using Microsoft.SemanticKernel;
 
 namespace UserStoryGenerator.Tests;
 
-public class EvalTests : IClassFixture<PromptEvalDotNetFixture>
+public class EvalFluentTests : IClassFixture<PromptEvalDotNetFixture>
 {
     private PromptEvalDotNetFixture _promptEvaluator = default!;
 
     private readonly ITestOutputHelper _output;
 
-    public EvalTests(PromptEvalDotNetFixture fixture, ITestOutputHelper output)
+    public EvalFluentTests(PromptEvalDotNetFixture fixture, ITestOutputHelper output)
     {
         _promptEvaluator = fixture;
         _output = output;
@@ -39,14 +39,8 @@ public class EvalTests : IClassFixture<PromptEvalDotNetFixture>
         _output.WriteLine($"Q: {modelOutput.Input}");
         _output.WriteLine($"A: {modelOutput.Output}.");
         
-        var coherence = await new CoherenceEval(kernel).Eval(modelOutput);
-        var groundedness = await new GroundednessEval(kernel).Eval(modelOutput);
-        var relevance = await new RelevanceEval(kernel).Eval(modelOutput);
-
-        Assert.Multiple(
-            () => Assert.True(coherence >= 3, $"Coherence of {userStory.Title} - score {coherence}, expecting min 3."),
-            () => Assert.True(groundedness >= 3, $"Groundedness of {userStory.Title} - score {groundedness}, expecting min 3."),
-            () => Assert.True(relevance >= 3, $"Relevance of {userStory.Title} - score {relevance}, expecting min 3.")
-        );
+        modelOutput.With(kernel).ShouldBeCoherent();
+        modelOutput.With(kernel).ShouldBeGrounded();
+        modelOutput.With(kernel).ShouldBeRelevant();
     }
 }

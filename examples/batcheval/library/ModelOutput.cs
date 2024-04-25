@@ -1,8 +1,10 @@
+using Microsoft.SemanticKernel;
+
 namespace BatchEval.Core;
 
-public struct ModelOutput
+public class ModelOutput
 {
-    public string Input { get; set; }
+    public string Input { get; set; } = default!;
 
-    public string Output { get; set; }
+    public string Output { get; set; } = default!;
 }
