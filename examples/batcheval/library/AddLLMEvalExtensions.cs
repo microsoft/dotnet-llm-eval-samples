@@ -1,4 +1,4 @@
-using BatchEval.Core;
+using Microsoft.SKEval;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using OpenTelemetry;
@@ -7,7 +7,7 @@ using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
 using System.Text;
 
-namespace BatchEval.Metrics;
+namespace Microsoft.SKEval.Metrics;
 
 public static class AddLLMEvalExtensions
 {

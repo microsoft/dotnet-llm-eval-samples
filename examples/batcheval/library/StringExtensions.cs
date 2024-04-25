@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public static class StringExtensions
 {

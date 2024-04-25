@@ -3,7 +3,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 internal static class EmbeddedResource
 {

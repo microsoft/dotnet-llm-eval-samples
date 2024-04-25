@@ -6,7 +6,7 @@ using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
 using System.Text;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public class JsonlUtils
 {

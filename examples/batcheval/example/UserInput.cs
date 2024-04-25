@@ -1,4 +1,4 @@
-namespace BatchEval;
+namespace Microsoft.SKEval;
 
 internal struct UserInput
 {

@@ -1,8 +1,5 @@
-using BatchEval.Core;
-using UserStoryGenerator;
+using Microsoft.SKEval;
 using Xunit.Abstractions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.SemanticKernel;
 
 namespace UserStoryGenerator.Tests;
 

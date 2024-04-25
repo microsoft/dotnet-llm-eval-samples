@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public class BatchEvalResults
 {

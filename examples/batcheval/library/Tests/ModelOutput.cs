@@ -1,9 +1,9 @@
 using Microsoft.SemanticKernel;
 using Xunit;
 
-namespace BatchEval.Core.Tests;
+namespace Microsoft.SKEval.Tests;
 
-public class ModelOutput : Core.ModelOutput
+public class ModelOutput : SKEval.ModelOutput
 {
     private Kernel? _kernel;
     

@@ -1,6 +1,6 @@
 using Microsoft.SemanticKernel;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public class RegexEval : IEvaluator<bool>
 {

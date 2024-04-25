@@ -7,7 +7,7 @@ using System.Diagnostics.Metrics;
 using System.Text;
 using Microsoft.SemanticKernel.Connectors;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public class PromptScoreEval : IEvaluator<int>
 {

@@ -1,4 +1,4 @@
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public interface IInputProcessor<T>
 {

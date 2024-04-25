@@ -1,4 +1,4 @@
-using BatchEval.Metrics;
+using Microsoft.SKEval.Metrics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using OpenTelemetry;
@@ -7,7 +7,7 @@ using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
 using System.Text;
 
-namespace BatchEval.Core;
+namespace Microsoft.SKEval;
 
 public class BatchEval<T>
 {

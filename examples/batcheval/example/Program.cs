@@ -7,7 +7,7 @@ using System.Diagnostics.Metrics;
 using System.Text;
 using BatchEval.Core;
 
-namespace BatchEval;
+namespace Microsoft.SKEval;
 
 class Program
 {
