@@ -32,6 +32,6 @@ Reminder: The return values for each task should be correctly formatted as an in
 
 ## Actual Task Input:
 
-{"CONTEXT": {{$Context}}, "ANSWER": {{$Answer}}}
+{"CONTEXT": "{{$Question}}", "ANSWER": "{{$Answer}}"}
 
 Actual Task Output:
