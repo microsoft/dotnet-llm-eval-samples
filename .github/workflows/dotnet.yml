@@ -1,6 +1,7 @@
 name: .NET
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
@@ -25,4 +26,8 @@ jobs:
       working-directory: examples/userstorygenerator/UserStoryGenerator.Tests
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      env:
+        AZURE_OPENAI_MODEL: ${{ secrets.AZURE_OPENAI_MODEL }}
+        AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+        AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
       working-directory: examples/userstorygenerator/UserStoryGenerator.Tests
