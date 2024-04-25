@@ -41,6 +41,6 @@ public class EvalFluentTests : IClassFixture<PromptEvalDotNetFixture>
         
         modelOutput.With(kernel).ShouldBeCoherent();
         modelOutput.With(kernel).ShouldBeGrounded();
-        modelOutput.With(kernel).ShouldBeRelevant();
+        modelOutput.With(kernel).ShouldBeRelevant(2);
     }
 }

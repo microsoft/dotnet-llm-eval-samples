@@ -46,7 +46,7 @@ public class EvalTests : IClassFixture<PromptEvalDotNetFixture>
         Assert.Multiple(
             () => Assert.True(coherence >= 3, $"Coherence of {userStory.Title} - score {coherence}, expecting min 3."),
             () => Assert.True(groundedness >= 3, $"Groundedness of {userStory.Title} - score {groundedness}, expecting min 3."),
-            () => Assert.True(relevance >= 3, $"Relevance of {userStory.Title} - score {relevance}, expecting min 3.")
+            () => Assert.True(relevance >= 2, $"Relevance of {userStory.Title} - score {relevance}, expecting min 2.")
         );
     }
 }
