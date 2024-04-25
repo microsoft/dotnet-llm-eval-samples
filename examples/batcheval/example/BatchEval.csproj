@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\UserStoryGenerator\UserStoryGenerator\UserStoryGenerator.csproj" />
+    <ProjectReference Include="..\..\userstorygenerator\UserStoryGenerator\UserStoryGenerator.csproj" />
     <ProjectReference Include="..\library\BatchEval.Core.csproj" />
   </ItemGroup>
 

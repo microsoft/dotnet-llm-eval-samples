@@ -2,7 +2,7 @@ using UserStoryGenerator;
 using Microsoft.SKEval;
 using Microsoft.SemanticKernel;
 
-namespace BatchEval;
+namespace BatchEvalSample;
 
 internal class UserStoryCreator : IInputProcessor<UserInput>
 {
