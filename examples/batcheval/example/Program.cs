@@ -1,13 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.SemanticKernel;
-using OpenTelemetry;
+﻿using Microsoft.SemanticKernel;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using System.Diagnostics.Metrics;
-using System.Text;
-using BatchEval.Core;
+using Microsoft.SKEval;
 
-namespace Microsoft.SKEval;
+namespace BatchEvalSample;
 
 class Program
 {

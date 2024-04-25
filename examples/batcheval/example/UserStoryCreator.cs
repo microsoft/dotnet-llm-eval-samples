@@ -1,5 +1,5 @@
 using UserStoryGenerator;
-using BatchEval.Core;
+using Microsoft.SKEval;
 using Microsoft.SemanticKernel;
 
 namespace BatchEval;
