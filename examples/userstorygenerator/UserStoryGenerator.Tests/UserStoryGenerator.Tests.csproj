@@ -25,7 +25,7 @@
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
     <ProjectReference Include="..\UserStoryGenerator\UserStoryGenerator.csproj" />
-    <ProjectReference Include="..\..\batcheval\library\SKEval.csproj" />
+    <ProjectReference Include="..\..\batcheval\library\Microsoft.SKEval.csproj" />
   </ItemGroup>
 
   <ItemGroup>

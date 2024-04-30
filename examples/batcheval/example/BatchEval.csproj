@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\userstorygenerator\UserStoryGenerator\UserStoryGenerator.csproj" />
-    <ProjectReference Include="..\library\SKEval.csproj" />
+    <ProjectReference Include="..\library\Microsoft.SKEval.csproj" />
   </ItemGroup>
 
 </Project>
