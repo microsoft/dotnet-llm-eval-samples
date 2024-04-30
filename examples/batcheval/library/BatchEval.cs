@@ -11,7 +11,7 @@ namespace Microsoft.SKEval;
 
 public class BatchEval<T>
 {
-    public const string MeterId = "LLMEvals.BatchEval";
+    public const string MeterId = "Microsoft.SKEval";
 
     IList<IEvaluator<int>> intEvaluators = new List<IEvaluator<int>>();
 

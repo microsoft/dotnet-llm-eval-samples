@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\userstorygenerator\UserStoryGenerator\UserStoryGenerator.csproj" />
-    <ProjectReference Include="..\library\BatchEval.Core.csproj" />
+    <ProjectReference Include="..\library\SKEval.csproj" />
   </ItemGroup>
 
 </Project>
