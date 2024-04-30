@@ -4,10 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>BatchEval.Core</PackageId>
+    <PackageId>Microsoft.SKEval</PackageId>
     <Version>0.0.1</Version>
     <Authors>Maho Pacheco</Authors>
-    <Company>Raccoon Bits</Company>
+    <Company>Microsoft</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,5 +46,4 @@
        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
